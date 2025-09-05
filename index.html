@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0.1rem;
+            padding: 0.1rem;
+        }
+        body {
+            margin: 0;
+            padding-top: 15px;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #d4e5f5;
+            text-align: center;
+        }
+        .title {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #222;
+        }
+        .filter-buttons {
+            margin-bottom: 1rem;
+        }
+        .filter-buttons button {
+            margin: 0.2rem;
+            padding: 0.6rem 1rem;
+            font-size: 1rem;
+            border: none;
+            background-color: #007bff;
+            color: white; 
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .filter-buttons button:hover {
+            background-color: #0056b3;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 10px;
+            gap: 15px;
+        }
+        .gallery .image {
+            width: 300px;
+            justify-content: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .gallery .image img {
+            width: 100%;
+            height: 200px;
+            border-radius: 15px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+        .gallery .image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            padding-top: 60px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background: rgba(0, 0, 0, 0.9);
+        }
+        .lightbox img {
+            margin: auto;
+            display: block;
+            max-width: 80%;
+            max-height: 80%;
+            border-radius: 10px;
+        }
+        .lightbox .close {
+            position: absolute;
+            top: 15px;
+            right: 30px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+        }
+        .lightbox .nav {
+            margin-top: 15px;
+        }
+        .lightbox .nav button {
+            margin: 0 10px;
+            padding: 0.6rem 1.2rem;
+            font-size: 1rem;
+            background: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        @media screen and (max-width: 768px) {
+            .gallery .image {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="title">Image Gallery</h1>
+
+    <div class="filter-buttons">
+        <button onclick="filterImages('all')">All</button>
+        <button onclick="filterImages('nature')">Nature</button>
+        <button onclick="filterImages('birds')">Birds</button>
+        <button onclick="filterImages('flowers')">Flowers</button>
+    </div>
+
+    <div class="gallery">
+        <div class="image nature"><img src="https://eskipaper.com/images/nature-27.jpg" alt="Nature 1"
+                onclick="openLightbox(this.src)" /></div>
+        <div class="image birds"><img src="https://i.redd.it/kcjbcqpyhb6y.jpg" alt="Bird 1"
+                onclick="openLightbox(this.src)" /></div>
+        <div class="image flowers"><img
+                src="http://webneel.com/wallpaper/sites/default/files/images/01-2014/24-flower-wallpaper.jpg"
+                alt="Flower 1" onclick="openLightbox(this.src)" /></div>
+        <div class="image nature"><img
+                src="https://getwallpapers.com/wallpaper/full/6/d/d/790982-hd-nature-wallpapers-1920x1080-download-free.jpg"
+                alt="Nature 2" onclick="openLightbox(this.src)" /></div>
+        <div class="image birds"><img
+                src="https://wallpapers.com/images/hd/1920x1080-hd-birds-flock-of-kingfishers-03v1ez09j83gcxw3.jpg"
+                alt="Bird 2" onclick="openLightbox(this.src)" /></div>
+        <div class="image flowers"><img
+                src="https://getwallpapers.com/wallpaper/full/1/c/2/960178-best-flower-desktop-backgrounds-2560x1600-for-android-50.jpg"
+                alt="Flower 2" onclick="openLightbox(this.src)" /></div>
+        <div class="image nature"><img
+                src="https://www.pixelstalk.net/wp-content/uploads/2016/08/Free-Download-Best-HD-Nature-Photos.jpg"
+                alt="Nature 3" onclick="openLightbox(this.src)" /></div>
+        <div class="image birds"><img src="https://wallpapercave.com/wp/wp9277429.jpg" alt="Bird 3"
+                onclick="openLightbox(this.src)" /></div>
+        <div class="image flowers"><img src="https://wallpaperaccess.com/full/1178438.jpg" alt="Flower 3"
+                onclick="openLightbox(this.src)" /></div>
+        <div class="image nature"><img src="https://wallpaperaccess.com/full/36322.jpg" alt="Nature 4"
+                onclick="openLightbox(this.src)" /></div>
+        <div class="image birds"><img src="https://wallpaperaccess.com/full/775987.jpg" alt="Bird 4"
+                onclick="openLightbox(this.src)" /></div>
+        <div class="image flowers"><img src="https://cdn.wallpapersafari.com/98/9/Y3f8uF.jpg" alt="Flower 4"
+                onclick="openLightbox(this.src)" /></div>
+    </div>
+
+    <div id="lightbox" class="lightbox">
+        <span class="close" onclick="closeLightbox()">×</span>
+        <img id="lightbox-img" src="" />
+        <div class="nav">
+            <button onclick="changeImage(-1)">⟨ Prev</button>
+            <button onclick="changeImage(1)">Next ⟩</button>
+        </div>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+        let images = [];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            images = Array.from(document.querySelectorAll(".gallery img"));
+        });
+
+        function openLightbox(src) {
+            document.getElementById("lightbox").style.display = "block";
+            document.getElementById("lightbox-img").src = src;
+            currentIndex = images.findIndex(img => img.src === src);
+        }
+
+        function closeLightbox() {
+            document.getElementById("lightbox").style.display = "none";
+        }
+
+        function changeImage(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = images.length - 1;
+            if (currentIndex >= images.length) currentIndex = 0;
+            document.getElementById("lightbox-img").src = images[currentIndex].src;
+        }
+
+        function filterImages(category) {
+            const allImages = document.querySelectorAll(".gallery .image");
+            allImages.forEach(img => {
+                img.style.display = category === "all" || img.classList.contains(category)
+                    ? "block"
+                    : "none";
+            });
+        }
+    </script>
+</body>
+</html>
